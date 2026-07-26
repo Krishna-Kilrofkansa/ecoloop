@@ -1,0 +1,94 @@
+!- Eco-Loop Baseline Medium Office (simplified single-zone PoC) -!
+!- EMS actuators: ECOLOOP_COOLING_SP, ECOLOOP_HEATING_SP -!
+
+Version,25.1;
+
+SimulationControl,
+  No, No, No, Yes, Yes;
+
+Timestep,4;
+
+RunPeriod,
+  Summer Week, !- Name
+  6,1, !- Begin Month/Day
+  6,7, !- End Month/Day
+  UseWeatherFile, !- Day Type
+  UseWeatherFile, !- Holidays
+  No, !- Apply Weekend
+  Yes, !- Use Weather File
+  Yes, !- Rain
+  Yes; !- Snow
+
+Site:Location,
+  Atlanta GA USA,
+  33.64, -84.43, -5.0, 308.0;
+
+Material,
+  Concrete, MediumRough, 0.20, 1.73, 2240, 900;
+
+Construction,
+  ExtWall, Concrete;
+
+BuildingSurface:Detailed,
+  Zone1 Wall, Wall, ExtWall, Perimeter_ZN_1_ZN, ,
+  0,0,3, 10,0,3, 10,0,0, 0,0,0;
+
+BuildingSurface:Detailed,
+  Zone1 Floor, Floor, ExtWall, Perimeter_ZN_1_ZN, ,
+  0,0,0, 10,0,0, 10,10,0, 0,10,0;
+
+BuildingSurface:Detailed,
+  Zone1 Roof, Roof, ExtWall, Perimeter_ZN_1_ZN, ,
+  0,10,3, 10,10,3, 10,0,3, 0,0,3;
+
+Zone,
+  Perimeter_ZN_1_ZN, 0, 0, 0, 0, 1, 1, autocalculate, ;
+
+ScheduleTypeLimits,
+  Temperature, -60, 200, Continuous, Temperature;
+
+Schedule:Compact,
+  ECOLOOP_COOLING_SP, Temperature, Through: 12/31, For: AllDays, Until: 24:00, 23.0;
+
+Schedule:Compact,
+  ECOLOOP_HEATING_SP, Temperature, Through: 12/31, For: AllDays, Until: 24:00, 21.0;
+
+ThermostatSetpoint:DualSetpoint,
+  Zone1 Thermostat, ECOLOOP_HEATING_SP, ECOLOOP_COOLING_SP;
+
+ZoneControl:Thermostat,
+  Perimeter_ZN_1_ZN Thermostat, Perimeter_ZN_1_ZN, Zone1 Thermostat, ;
+
+IdealLoadsAirSystem,
+  Zone1 Ideal Loads, , 50, 13, 0.015, 0.007, 50, , No, 0.015, 0.007, ;
+
+ZoneHVAC:EquipmentList,
+  Zone1 Equipment, SequentialLoad, Zone1 Ideal Loads, 1, 1;
+
+ZoneHVAC:EquipmentConnections,
+  Perimeter_ZN_1_ZN, Zone1 Equipment, Zone1 In Nodes, , Zone1 Out Nodes, ;
+
+Output:Variable,*,Zone Mean Air Temperature,timestep;
+Output:Variable,*,Zone Air Relative Humidity,timestep;
+Output:Variable,*,Zone Air CO2 Concentration,timestep;
+Output:Variable,*,Site Outdoor Air Drybulb Temperature,timestep;
+Output:Variable,*,Facility Total Electricity Demand Rate,timestep;
+
+Output:Meter,Electricity:Facility,timestep;
+
+EnergyManagementSystem:Sensor,
+  ECOLOOP Zone Temp, Perimeter_ZN_1_ZN, Zone Mean Air Temperature;
+
+EnergyManagementSystem:Actuator,
+  ECOLOOP Cooling Actuator, ECOLOOP_COOLING_SP, Schedule:Compact, Schedule Value;
+
+EnergyManagementSystem:Actuator,
+  ECOLOOP Heating Actuator, ECOLOOP_HEATING_SP, Schedule:Compact, Schedule Value;
+
+EnergyManagementSystem:Program,
+  ECOLOOP Init,
+  Set ECOLOOP Cooling Actuator = 23.0,
+  Set ECOLOOP Heating Actuator = 21.0;
+
+EnergyManagementSystem:ProgramCallingManager,
+  ECOLOOP Manager, BeginZoneTimestepBeforeSetCurrentWeather, ECOLOOP Init;

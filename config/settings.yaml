@@ -1,0 +1,54 @@
+# Eco-Loop configuration — Gemma 4 E2B as cognitive engine (~2 GB RAM)
+
+llm:
+  provider: ollama
+  model: gemma4:e2b
+  api_base: http://127.0.0.1:11434
+  temperature: 0.1
+  max_tokens: 2048
+  timeout_seconds: 300
+
+simulation:
+  idf_baseline: config/baseline_medium_office.idf
+  idf_agent: output/agent_modified.idf
+  weather: config/weather_Atlanta.epw
+  run_period_days: 1
+  timestep_minutes: 15
+  supervisory_interval_minutes: 120
+  output_dir: output/simulation
+  demo_mode: false  # set true when EnergyPlus is not installed
+
+comfort:
+  pmv_target_min: -0.5
+  pmv_target_max: 0.5
+  pmv_alert_threshold: 0.45
+  co2_max_ppm: 1000
+  rh_max_percent: 65
+
+setpoints:
+  cooling_min: 18.0
+  cooling_max: 28.0
+  heating_min: 12.0
+  heating_max: 22.0
+  min_deadband: 1.5
+  max_ramp_c_per_hour: 1.0
+  min_dwell_minutes: 30
+
+grid:
+  peak_tariff_usd_kwh: 0.35
+  mid_tariff_usd_kwh: 0.18
+  offpeak_tariff_usd_kwh: 0.08
+  peak_carbon_gco2_kwh: 450
+
+objective_weights:
+  alpha_cost: 1.0
+  beta_carbon: 0.8
+  gamma_comfort: 2.5
+
+mcp:
+  host: 127.0.0.1
+  port: 8765
+
+dashboard:
+  refresh_seconds: 5
+  data_file: output/telemetry_log.csv

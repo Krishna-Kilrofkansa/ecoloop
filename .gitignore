@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.env
+.venv/
+venv/
+output/simulation/*.csv
+output/simulation/*.err
+output/simulation/*.eso
+output/simulation/*.mtr
+*.log
+.DS_Store
+.idea/
+.vscode/
