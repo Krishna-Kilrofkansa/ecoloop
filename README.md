@@ -9,6 +9,7 @@
 [![MCP](https://img.shields.io/badge/Protocol-MCP-8B5CF6)]()
 
 ---
+## The Video Link: https://youtu.be/m9f-8_OLdwQ
 
 ## The Problem
 
@@ -150,7 +151,7 @@ Additional environmental guards: zone temp 18–27°C, RH ≤ 65%, CO2 ≤ 1000 
 # config/settings.yaml
 llm:
   provider: ollama
-  model: gemma4:e2b
+  model: gemma4:e2b #local model
   temperature: 0.1          # Low for deterministic outputs
   max_tokens: 2048
   timeout_seconds: 300
