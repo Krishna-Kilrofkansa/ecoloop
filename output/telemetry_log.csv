@@ -52,3 +52,4 @@ timestamp,sim_day,sim_hour,zone_temp_c,outdoor_temp_c,zone_rh_percent,zone_co2_p
 2026-07-26T22:39:33.521405,1,12.5,23.57,27.34,54.6,858.0,-3.0,32.99,23.0,21.5,0.18,320.0,agent,"Setpoints chosen within allowed ranges (H: 18-22°C, C: 23-28°C) while maintaining the required differential (H ≥ C - 1). [deadband auto-fix]"
 2026-07-26T22:43:02.853524,1,12.75,23.59,27.58,54.6,858.0,-3.0,35.32,23.0,21.5,0.18,320.0,agent,
 2026-07-26T22:45:52.070604,1,13.0,23.63,27.83,54.7,858.0,-3.0,37.93,23.0,21.5,0.18,320.0,agent,PMV index is very low (-3.0). Setpoints are adjusted to maintain a minimum 1°C differential while keeping heating within the 18-22°C range and cooling within the 23-28°C range.
+2026-07-26T22:48:25.052622,1,13.25,23.67,28.09,54.8,858.0,-3.0,31.74,23.5,21.0,0.18,320.0,agent,
